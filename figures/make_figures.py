@@ -52,49 +52,65 @@ def head(title: str, subtitle: str, footer: str) -> list[str]:
 
 
 def calendar_figure() -> str:
-    """Relief in the worst month, by the month the drug starts."""
+    """The worst single month, in dollars, by the month the drug starts.
+
+    Earlier drafts plotted the *percentage* the worst month falls. That was a
+    ratio against a baseline the chart never showed, and twelve bars labelled
+    Jan-Dec read as one year declining rather than as twelve separate people.
+    Dollars against a visible counter line fix both: the bar is what you pay,
+    the line is what you would have paid, and the closing gap is the story.
+    """
     rows = RESULTS["shock_month_sweep"]
-    x0, y0, plot_w, plot_h = 64, 190, W - 128, 430
+    counter = max(r["worst_month"] for r in rows)      # $1,800, the December case
+    x0, y0, plot_w, plot_h = 92, 232, W - 156, 372
+    top = 2000.0
 
     s = head(
-        "The same $1,800 drug. Only the month it starts changes.",
-        "How much the worst month falls. They enrolled the same month the drug "
-        "started, so nobody was late.",
+        "Same drug, same $1,800. The month it starts sets your worst bill.",
+        "Each bar is a different person starting the same drug in a different "
+        "month. Nobody was late.",
         "42 CFR 423.137 · 2026 out-of-pocket cap $2,100 · "
         "github.com/musharraf3/WhenYouPay",
     )
 
-    for pct in (0, 25, 50, 75, 100):
-        y = y0 + plot_h - plot_h * pct / 100
+    for v in (0, 500, 1000, 1500, 2000):
+        y = y0 + plot_h - plot_h * v / top
         s.append(f'<line x1="{x0}" y1="{y:.1f}" x2="{x0+plot_w}" y2="{y:.1f}" '
                  f'stroke="{GRID}" stroke-width="1"/>')
         s.append(f'<text x="{x0-14}" y="{y+6:.1f}" font-size="16" fill="{MUTED}" '
-                 f'text-anchor="end">{pct}%</text>')
+                 f'text-anchor="end">${v:,}</text>')
+
+    # the thing every bar is being compared against, drawn before the bars
+    yc = y0 + plot_h - plot_h * counter / top
+    s.append(f'<line x1="{x0}" y1="{yc:.1f}" x2="{x0+plot_w}" y2="{yc:.1f}" '
+             f'stroke="{ORANGE}" stroke-width="2.5" stroke-dasharray="8 6"/>')
+    s.append(f'<text x="{x0+8}" y="{yc-12:.1f}" font-size="18" font-weight="600" '
+             f'fill="{ORANGE}">Paying at the pharmacy counter: ${counter:,.0f}</text>')
 
     slot = plot_w / len(rows)
-    bw = slot * 0.56
+    bw = slot * 0.58
     for i, r in enumerate(rows):
-        pct = r["relief_share"] * 100
-        bh = plot_h * pct / 100
+        amt = r["worst_month"]
+        bh = plot_h * amt / top
         x = x0 + slot * i + (slot - bw) / 2
         y = y0 + plot_h - bh
-        if bh > 0:
-            s.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw:.1f}" '
-                     f'height="{bh:.1f}" rx="4" fill="{BLUE}"/>')
-        s.append(f'<text x="{x+bw/2:.1f}" y="{(y-12) if bh > 0 else y0+plot_h-12:.1f}" '
-                 f'font-size="19" font-weight="700" fill="{INK}" '
-                 f'text-anchor="middle">{pct:.0f}%</text>')
+        s.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw:.1f}" '
+                 f'height="{bh:.1f}" rx="4" fill="{BLUE}"/>')
+        if i in (0, 6, 10, 11):
+            s.append(f'<text x="{x+bw/2:.1f}" y="{y-12:.1f}" font-size="19" '
+                     f'font-weight="700" fill="{INK}" text-anchor="middle">'
+                     f'${amt:,.0f}</text>')
         s.append(f'<text x="{x+bw/2:.1f}" y="{y0+plot_h+28:.1f}" font-size="17" '
                  f'fill="{INK2}" text-anchor="middle">{esc(r["shock_month"][:3])}</text>')
 
     s.append(f'<line x1="{x0}" y1="{y0+plot_h}" x2="{x0+plot_w}" y2="{y0+plot_h}" '
              f'stroke="{INK2}" stroke-width="1.5"/>')
+    s.append(f'<text x="{x0+plot_w/2:.1f}" y="{y0+plot_h+58:.1f}" font-size="18" '
+             f'fill="{INK2}" text-anchor="middle">Month the drug starts</text>')
 
-    last = rows[-1]
-    s.append(f'<text x="{x0+plot_w-6}" y="{y0+plot_h+70}" font-size="20" '
-             f'font-weight="600" fill="{INK}" text-anchor="end">'
-             f'December: the worst month is still ${last["worst_month"]:,.0f}. '
-             f'Nothing is spread at all.</text>')
+    s.append(f'<text x="{x0}" y="{y0+plot_h+100:.1f}" font-size="21" '
+             f'font-weight="600" fill="{INK}">January gets your worst month down '
+             f'to $223. December leaves it at $1,800.</text>')
     s.append("</svg>")
     return "\n".join(s)
 
@@ -115,9 +131,9 @@ def cliff_figure() -> str:
     top = 200.0
 
     s = head(
-        "$60 a month, every month. December bills $181.19.",
-        "A steady prescription and no shock. The bill climbs because the balance "
-        "has fewer months left to divide into.",
+        "$60 every month. The program bills $181.19 in December.",
+        "Nothing unusual happens all year. The bill climbs because each month's "
+        "balance is divided into fewer remaining months.",
         "Medicare publishes the same shape: its $80-a-month example ends at "
         "$241.53 · github.com/musharraf3/WhenYouPay",
     )
@@ -163,9 +179,11 @@ def cliff_figure() -> str:
     s.append(f'<text x="{x0+276}" y="{ly}" font-size="18" fill="{INK2}">'
              f'At the pharmacy counter ($60)</text>')
 
-    s.append(f'<text x="{x0}" y="{y0+plot_h+70}" font-size="20" font-weight="600" '
-             f'fill="{INK}">Same $720 across the year either way. '
-             f'Four months cost more than paying at the counter.</text>')
+    over = [i for i, a in enumerate(billed) if a > per_month]
+
+    s.append(f'<text x="{x0}" y="{y0+plot_h+72}" font-size="21" font-weight="600" '
+             f'fill="{INK}">The year costs $720 either way. '
+             f'{len(over)} of the 12 months cost more than paying cash.</text>')
     s.append("</svg>")
     return "\n".join(s)
 
