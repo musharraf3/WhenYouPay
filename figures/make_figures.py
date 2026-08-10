@@ -92,19 +92,26 @@ def calendar_figure() -> str:
 
     slot = plot_w / len(rows)
     bw = slot * 0.58
+    focus = {0, len(rows) - 1}          # the two people the post opens with
     for i, r in enumerate(rows):
         amt = r["worst_month"]
         bh = plot_h * amt / top
         x = x0 + slot * i + (slot - bw) / 2
         y = y0 + plot_h - bh
+        op = "" if i in focus else ' fill-opacity="0.35"'
         s.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw:.1f}" '
-                 f'height="{bh:.1f}" rx="4" fill="{BLUE}"/>')
-        if i in (0, 6, 10, 11):
+                 f'height="{bh:.1f}" rx="4" fill="{BLUE}"{op}/>')
+        if i in focus or i in (6, 10):
+            weight = 700 if i in focus else 600
+            ink = INK if i in focus else INK2
             s.append(f'<text x="{x+bw/2:.1f}" y="{y-12:.1f}" font-size="19" '
-                     f'font-weight="700" fill="{INK}" text-anchor="middle">'
+                     f'font-weight="{weight}" fill="{ink}" text-anchor="middle">'
                      f'${amt:,.0f}</text>')
+        lab_ink = INK if i in focus else INK2
+        lab_w = 700 if i in focus else 400
         s.append(f'<text x="{x+bw/2:.1f}" y="{y0+plot_h+28:.1f}" font-size="17" '
-                 f'fill="{INK2}" text-anchor="middle">{esc(r["shock_month"][:3])}</text>')
+                 f'font-weight="{lab_w}" fill="{lab_ink}" text-anchor="middle">'
+                 f'{esc(r["shock_month"][:3])}</text>')
 
     s.append(f'<line x1="{x0}" y1="{y0+plot_h}" x2="{x0+plot_w}" y2="{y0+plot_h}" '
              f'stroke="{INK2}" stroke-width="1.5"/>')
@@ -112,8 +119,8 @@ def calendar_figure() -> str:
              f'fill="{INK2}" text-anchor="middle">Month the drug starts</text>')
 
     s.append(f'<text x="{x0}" y="{y0+plot_h+100:.1f}" font-size="21" '
-             f'font-weight="600" fill="{INK}">January gets your worst month down '
-             f'to $223. December leaves it at $1,800.</text>')
+             f'font-weight="600" fill="{INK}">Diagnosed in January, your worst '
+             f'month is $223. Diagnosed in December, it is still $1,800.</text>')
     s.append("</svg>")
     return "\n".join(s)
 
@@ -135,7 +142,7 @@ def cliff_figure() -> str:
 
     s = head(
         "$60 every month. The program bills $181.19 in December.",
-        "Nothing unusual happens all year. The bill climbs because each month's "
+        "A maintenance drug with a steady copay. The bill climbs as each "
         "balance is divided into fewer remaining months.",
         "Medicare publishes the same shape: its $80-a-month example ends at "
         "$241.53 · github.com/musharraf3/WhenYouPay",

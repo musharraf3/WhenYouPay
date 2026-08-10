@@ -18,33 +18,33 @@
 <text x="100" y="257.2" font-size="18" font-weight="600" fill="#eb6834">Paying at the pharmacy counter: $1,800</text>
 <rect x="110.3" y="562.5" width="50.5" height="41.5" rx="4" fill="#2a78d6"/>
 <text x="135.5" y="550.5" font-size="19" font-weight="700" fill="#0b0b0b" text-anchor="middle">$223</text>
-<text x="135.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Jan</text>
-<rect x="197.3" y="560.4" width="50.5" height="43.6" rx="4" fill="#2a78d6"/>
-<text x="222.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Feb</text>
-<rect x="284.3" y="557.9" width="50.5" height="46.1" rx="4" fill="#2a78d6"/>
-<text x="309.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Mar</text>
-<rect x="371.3" y="554.7" width="50.5" height="49.3" rx="4" fill="#2a78d6"/>
-<text x="396.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Apr</text>
-<rect x="458.3" y="550.8" width="50.5" height="53.2" rx="4" fill="#2a78d6"/>
-<text x="483.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">May</text>
-<rect x="545.3" y="545.6" width="50.5" height="58.4" rx="4" fill="#2a78d6"/>
-<text x="570.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Jun</text>
-<rect x="632.3" y="538.5" width="50.5" height="65.5" rx="4" fill="#2a78d6"/>
-<text x="657.5" y="526.5" font-size="19" font-weight="700" fill="#0b0b0b" text-anchor="middle">$352</text>
-<text x="657.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Jul</text>
-<rect x="719.3" y="528.5" width="50.5" height="75.5" rx="4" fill="#2a78d6"/>
-<text x="744.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Aug</text>
-<rect x="806.3" y="513.3" width="50.5" height="90.7" rx="4" fill="#2a78d6"/>
-<text x="831.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Sep</text>
-<rect x="893.3" y="487.8" width="50.5" height="116.2" rx="4" fill="#2a78d6"/>
-<text x="918.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Oct</text>
-<rect x="980.3" y="431.9" width="50.5" height="172.1" rx="4" fill="#2a78d6"/>
-<text x="1005.5" y="419.9" font-size="19" font-weight="700" fill="#0b0b0b" text-anchor="middle">$925</text>
-<text x="1005.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Nov</text>
+<text x="135.5" y="632.0" font-size="17" font-weight="700" fill="#0b0b0b" text-anchor="middle">Jan</text>
+<rect x="197.3" y="560.4" width="50.5" height="43.6" rx="4" fill="#2a78d6" fill-opacity="0.35"/>
+<text x="222.5" y="632.0" font-size="17" font-weight="400" fill="#52514e" text-anchor="middle">Feb</text>
+<rect x="284.3" y="557.9" width="50.5" height="46.1" rx="4" fill="#2a78d6" fill-opacity="0.35"/>
+<text x="309.5" y="632.0" font-size="17" font-weight="400" fill="#52514e" text-anchor="middle">Mar</text>
+<rect x="371.3" y="554.7" width="50.5" height="49.3" rx="4" fill="#2a78d6" fill-opacity="0.35"/>
+<text x="396.5" y="632.0" font-size="17" font-weight="400" fill="#52514e" text-anchor="middle">Apr</text>
+<rect x="458.3" y="550.8" width="50.5" height="53.2" rx="4" fill="#2a78d6" fill-opacity="0.35"/>
+<text x="483.5" y="632.0" font-size="17" font-weight="400" fill="#52514e" text-anchor="middle">May</text>
+<rect x="545.3" y="545.6" width="50.5" height="58.4" rx="4" fill="#2a78d6" fill-opacity="0.35"/>
+<text x="570.5" y="632.0" font-size="17" font-weight="400" fill="#52514e" text-anchor="middle">Jun</text>
+<rect x="632.3" y="538.5" width="50.5" height="65.5" rx="4" fill="#2a78d6" fill-opacity="0.35"/>
+<text x="657.5" y="526.5" font-size="19" font-weight="600" fill="#52514e" text-anchor="middle">$352</text>
+<text x="657.5" y="632.0" font-size="17" font-weight="400" fill="#52514e" text-anchor="middle">Jul</text>
+<rect x="719.3" y="528.5" width="50.5" height="75.5" rx="4" fill="#2a78d6" fill-opacity="0.35"/>
+<text x="744.5" y="632.0" font-size="17" font-weight="400" fill="#52514e" text-anchor="middle">Aug</text>
+<rect x="806.3" y="513.3" width="50.5" height="90.7" rx="4" fill="#2a78d6" fill-opacity="0.35"/>
+<text x="831.5" y="632.0" font-size="17" font-weight="400" fill="#52514e" text-anchor="middle">Sep</text>
+<rect x="893.3" y="487.8" width="50.5" height="116.2" rx="4" fill="#2a78d6" fill-opacity="0.35"/>
+<text x="918.5" y="632.0" font-size="17" font-weight="400" fill="#52514e" text-anchor="middle">Oct</text>
+<rect x="980.3" y="431.9" width="50.5" height="172.1" rx="4" fill="#2a78d6" fill-opacity="0.35"/>
+<text x="1005.5" y="419.9" font-size="19" font-weight="600" fill="#52514e" text-anchor="middle">$925</text>
+<text x="1005.5" y="632.0" font-size="17" font-weight="400" fill="#52514e" text-anchor="middle">Nov</text>
 <rect x="1067.3" y="269.2" width="50.5" height="334.8" rx="4" fill="#2a78d6"/>
 <text x="1092.5" y="257.2" font-size="19" font-weight="700" fill="#0b0b0b" text-anchor="middle">$1,800</text>
-<text x="1092.5" y="632.0" font-size="17" fill="#52514e" text-anchor="middle">Dec</text>
+<text x="1092.5" y="632.0" font-size="17" font-weight="700" fill="#0b0b0b" text-anchor="middle">Dec</text>
 <line x1="92" y1="604" x2="1136" y2="604" stroke="#52514e" stroke-width="1.5"/>
 <text x="614.0" y="662.0" font-size="18" fill="#52514e" text-anchor="middle">Month the drug starts</text>
-<text x="92" y="704.0" font-size="21" font-weight="600" fill="#0b0b0b">January gets your worst month down to $223. December leaves it at $1,800.</text>
+<text x="92" y="704.0" font-size="21" font-weight="600" fill="#0b0b0b">Diagnosed in January, your worst month is $223. Diagnosed in December, it is still $1,800.</text>
 </svg>
