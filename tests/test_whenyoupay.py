@@ -91,7 +91,7 @@ def test_input_validation():
 
 # --- the findings -----------------------------------------------------------
 
-def test_a_big_early_bill_is_what_the_programme_is_for():
+def test_a_big_early_bill_is_what_the_program_is_for():
     c = compare(SHOCK, 2026, 1)
     assert c["worst_month_counter"] == 1800.0
     assert c["worst_month_joined"] < 250
@@ -210,3 +210,46 @@ def test_advice_citations_are_all_real_rules():
     for costs, _d in PROFILES.values():
         for c in advise(costs, 2026, 1).citations:
             assert c in known
+
+
+# ---------------------------------------------------------------------------
+# Citation pinning.
+#
+# The paragraph numbers in this repository have been wrong once already: an
+# early draft cited the cap formula to 423.137(d)(2), and a stale (d)(2)(i)
+# survived in engine.py long after the README was corrected. A citation that
+# is merely well-formed is not a citation that is right, and the existing test
+# only checks that emitted citations exist in rules.py.
+#
+# Each pairing below was read off the regulation itself (eCFR / Cornell LII),
+# not inferred. If someone renumbers one, this fails instead of shipping a
+# confident wrong reference in a post that trades on citing primary sources.
+# ---------------------------------------------------------------------------
+
+EXPECTED_CITATIONS = {
+    "first_month_cap":           "42 CFR 423.137(c)(1)(i)",
+    "later_month_cap":           "42 CFR 423.137(c)(1)(ii)",
+    "months_remaining_inclusive": "42 CFR 423.137(c)(3)",
+    "retroactive_window":        "42 CFR 423.137(d)(6)",
+    "grace_period":              "42 CFR 423.137(f)(2)(ii), (f)(3)",
+    "year_end_balance":          "42 CFR 423.137(g)(4)",
+    "no_fees_or_interest":       "42 CFR 423.137(g)(1)(iii)",
+    "billed_never_exceeds_cap":  "42 CFR 423.137(g)(1)(ii)",
+}
+
+
+def test_citations_match_the_regulation():
+    from whenyoupay.rules import RULES_BY_KEY
+    for key, citation in EXPECTED_CITATIONS.items():
+        assert key in RULES_BY_KEY, f"rule '{key}' has gone missing"
+        assert RULES_BY_KEY[key].citation == citation, (
+            f"{key}: expected {citation}, found {RULES_BY_KEY[key].citation}")
+
+
+def test_no_source_file_cites_the_retired_paragraphs():
+    """(d)(2) was the original mistake. It must not come back anywhere."""
+    import pathlib
+    root = pathlib.Path(__file__).resolve().parent.parent
+    for path in list((root / "whenyoupay").glob("*.py")) + [root / "README.md"]:
+        text = path.read_text(encoding="utf-8")
+        assert "423.137(d)(2)" not in text, f"{path.name} cites retired 423.137(d)(2)"

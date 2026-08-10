@@ -1,18 +1,18 @@
 """What to tell the person, and when to tell them not to bother.
 
-A tool that recommends enrolment to everyone is a brochure. This one has to
+A tool that recommends enrollment to everyone is a brochure. This one has to
 be able to say "this will not help you, and in November it will cost you
 more than the counter would have", because for a large class of people that
 is the true answer.
 
 Three rules hold everywhere in this module:
 
-  1. It never claims the programme saves money. It cannot. The total is
+  1. It never claims the program saves money. It cannot. The total is
      arithmetically identical and that is asserted in a test.
   2. Every statement that rests on the regulation carries the citation.
   3. When the answer depends on a fact the tool does not have - whether
      someone qualifies for Extra Help, whether a shock is coming - it says
-     so instead of guessing in the direction of enrolment.
+     so instead of guessing in the direction of enrollment.
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ from .rules import (GRACE_PERIOD_MONTHS, PROCESSING_DAYS_BEFORE_YEAR,
                     PROCESSING_HOURS_DURING_YEAR, RETROACTIVE_ELECTION_HOURS,
                     cite, threshold)
 
-# Below this much relief in the worst month, the programme is not doing
+# Below this much relief in the worst month, the program is not doing
 # anything a person would notice, and saying so is more useful than a
 # technically-correct yes. A judgement call, stated openly, and the only
 # one in the file.
@@ -59,7 +59,7 @@ def advise(monthly_out_of_pocket: list[float], year: int = 2026,
 
     detail = [
         f"Your costs are the same either way: ${c['total_counter']:,.2f} "
-        f"for the year, with or without the programme.",
+        f"for the year, with or without the program.",
         f"Worst single month at the pharmacy counter: "
         f"${c['worst_month_counter']:,.2f}.",
         f"Worst single month if you join in {MONTHS[start_month - 1]}: "
@@ -83,7 +83,7 @@ def advise(monthly_out_of_pocket: list[float], year: int = 2026,
     if already_paid_at_counter > 0:
         warnings.append(
             f"You have already paid ${already_paid_at_counter:,.2f} at the "
-            f"counter this year. That money does not enter the programme. "
+            f"counter this year. That money does not enter the program. "
             f"Undoing a claim is possible only within "
             f"{RETROACTIVE_ELECTION_HOURS} hours of the claim being "
             f"adjudicated, and only on health-jeopardy grounds.")
@@ -101,7 +101,7 @@ def advise(monthly_out_of_pocket: list[float], year: int = 2026,
         verdict = "too late to help"
         headline = (
             f"Joining in {MONTHS[start_month - 1]} recovers little. The "
-            f"programme can only spread costs you have not yet paid, and "
+            f"program can only spread costs you have not yet paid, and "
             f"most of yours are behind you.")
     else:
         verdict = "helps"
@@ -140,7 +140,7 @@ def advise(monthly_out_of_pocket: list[float], year: int = 2026,
     warnings.append(
         "This tool does not know whether you qualify for Extra Help "
         "(the Part D low-income subsidy). If you do, your copays are "
-        "already small and this programme has little left to smooth. "
+        "already small and this program has little left to smooth. "
         "Check that first - it lowers what you owe, which this never does.")
 
     return Advice(verdict=verdict, headline=headline, detail=detail,

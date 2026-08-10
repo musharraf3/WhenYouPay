@@ -17,4 +17,4 @@ someone you help, free and authoritative help exists: your Part D plan, your
 State Health Insurance Assistance Program (SHIP), and 1-800-MEDICARE.
 
 If you may qualify for Extra Help (the Part D low-income subsidy), check that
-first. It reduces what you owe. This programme never does.
+first. It reduces what you owe. This program never does.

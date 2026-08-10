@@ -28,7 +28,8 @@ THRESHOLD_SOURCE = (
 )
 
 # --- the timing rules -------------------------------------------------------
-# 42 CFR 423.137(c) and (d).
+# Election and processing: 42 CFR 423.137(d)(1)-(4). Retroactive election:
+# (d)(6). Grace period before involuntary termination: (f)(2)(ii) and (f)(3).
 PROCESSING_DAYS_BEFORE_YEAR = 10   # requests received before the plan year
 PROCESSING_HOURS_DURING_YEAR = 24  # requests received during the plan year
 RETROACTIVE_ELECTION_HOURS = 72    # window to ask for a claim to be undone
@@ -38,7 +39,7 @@ RETROACTIVE_TEST = (
     "A retroactive election is available only where the enrollee believes "
     "that delay may seriously jeopardize their life, health, or ability to "
     "regain maximum function, and the request is made within 72 hours of "
-    "the date and time the claim was adjudicated. 42 CFR 423.137(c)."
+    "the date and time the claim was adjudicated. 42 CFR 423.137(d)(6)."
 )
 
 
@@ -57,7 +58,7 @@ RULES = [
         "out-of-pocket threshold minus the out-of-pocket costs already "
         "incurred that year, divided by the number of months remaining in "
         "the plan year.",
-        "42 CFR 423.137(d)(2)(i)",
+        "42 CFR 423.137(c)(1)(i)",
     ),
     Rule(
         "later_month_cap",
@@ -65,37 +66,49 @@ RULES = [
         "remaining out-of-pocket costs owed and any additional out-of-pocket "
         "costs incurred, divided by the number of months remaining in the "
         "plan year.",
-        "42 CFR 423.137(d)(2)(ii)",
+        "42 CFR 423.137(c)(1)(ii)",
     ),
     Rule(
         "months_remaining_inclusive",
         "The number of months remaining in the plan year includes the month "
         "for which the cap is being calculated.",
-        "42 CFR 423.137(d)(2)",
+        "42 CFR 423.137(c)(3)",
     ),
     Rule(
         "no_cost_reduction",
         "Participation changes when the enrollee pays. It does not change "
-        "what the enrollee owes, and no interest or fee may be charged.",
-        "42 CFR 423.137(a); IRA sec. 11202",
+        "what the enrollee owes.",
+        "42 CFR 423.137(a); SSA 1860D-2(b)(2)(E)",
+    ),
+    Rule(
+        "no_fees_or_interest",
+        "A Part D sponsor must not charge late fees, interest payments, or "
+        "other fees, such as for different payment mechanisms.",
+        "42 CFR 423.137(g)(1)(iii)",
+    ),
+    Rule(
+        "billed_never_exceeds_cap",
+        "The amount billed for the month for which the maximum monthly cap "
+        "is being calculated cannot be higher than the cap for that month.",
+        "42 CFR 423.137(g)(1)(ii)",
     ),
     Rule(
         "retroactive_window",
         RETROACTIVE_TEST,
-        "42 CFR 423.137(c)",
+        "42 CFR 423.137(d)(6)",
     ),
     Rule(
         "grace_period",
         "Before terminating a participant for non-payment, the plan must "
         "give a grace period of at least two months, and the participant "
         "stays in if the overdue balance is paid in full within it.",
-        "42 CFR 423.137(e)",
+        "42 CFR 423.137(f)(2)(ii), (f)(3)",
     ),
     Rule(
         "year_end_balance",
         "Unsettled balances at the end of the plan year are treated as plan "
         "losses. The enrollee's Part D coverage is not forfeited over them.",
-        "42 CFR 423.137(e)",
+        "42 CFR 423.137(g)(4)",
     ),
 ]
 

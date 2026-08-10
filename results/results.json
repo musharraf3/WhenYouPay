@@ -45,10 +45,10 @@
       "description": "the same drug started in September",
       "annual_total": 2075.0,
       "worst_month_counter": 1800.0,
-      "worst_month_joined": 519.25,
-      "relief": 1280.75,
+      "worst_month_joined": 519.24,
+      "relief": 1280.76,
       "months_worse_than_counter": 3,
-      "december_bill": 519.25,
+      "december_bill": 519.24,
       "verdict": "helps"
     },
     {
@@ -56,10 +56,10 @@
       "description": "the same drug started in November",
       "annual_total": 2075.0,
       "worst_month_counter": 1800.0,
-      "worst_month_joined": 963.0,
-      "relief": 837.0,
+      "worst_month_joined": 962.99,
+      "relief": 837.01,
       "months_worse_than_counter": 3,
-      "december_bill": 963.0,
+      "december_bill": 962.99,
       "verdict": "helps"
     },
     {
@@ -67,10 +67,10 @@
       "description": "two costly months, January and July",
       "annual_total": 2050.0,
       "worst_month_counter": 900.0,
-      "worst_month_joined": 287.24,
-      "relief": 612.76,
+      "worst_month_joined": 287.23,
+      "relief": 612.77,
       "months_worse_than_counter": 10,
-      "december_bill": 287.24,
+      "december_bill": 287.23,
       "verdict": "helps"
     },
     {
@@ -109,8 +109,8 @@
     {
       "shock_month": "February",
       "months_to_spread_over": 11,
-      "worst_month": 234.36,
-      "relief": 1565.64,
+      "worst_month": 234.35,
+      "relief": 1565.65,
       "relief_share": 0.8698,
       "year_end_unpaid": 0.0,
       "verdict": "helps"
@@ -118,8 +118,8 @@
     {
       "shock_month": "March",
       "months_to_spread_over": 10,
-      "worst_month": 247.95,
-      "relief": 1552.05,
+      "worst_month": 247.94,
+      "relief": 1552.06,
       "relief_share": 0.8623,
       "year_end_unpaid": 0.0,
       "verdict": "helps"
@@ -136,8 +136,8 @@
     {
       "shock_month": "May",
       "months_to_spread_over": 8,
-      "worst_month": 286.25,
-      "relief": 1513.75,
+      "worst_month": 286.24,
+      "relief": 1513.76,
       "relief_share": 0.841,
       "year_end_unpaid": 0.0,
       "verdict": "helps"
@@ -145,8 +145,8 @@
     {
       "shock_month": "June",
       "months_to_spread_over": 7,
-      "worst_month": 314.23,
-      "relief": 1485.77,
+      "worst_month": 314.22,
+      "relief": 1485.78,
       "relief_share": 0.8254,
       "year_end_unpaid": 0.0,
       "verdict": "helps"
@@ -290,7 +290,7 @@
     },
     {
       "monthly_at_counter": 40,
-      "december_bill": 120.8,
+      "december_bill": 120.79,
       "multiple_of_counter": 3.02,
       "months_worse_than_counter": 4,
       "verdict": "does not help"
@@ -304,7 +304,7 @@
     },
     {
       "monthly_at_counter": 100,
-      "december_bill": 301.99,
+      "december_bill": 301.98,
       "multiple_of_counter": 3.02,
       "months_worse_than_counter": 4,
       "verdict": "does not help"
@@ -318,7 +318,7 @@
     },
     {
       "monthly_at_counter": 200,
-      "december_bill": 606.25,
+      "december_bill": 606.24,
       "multiple_of_counter": 3.03,
       "months_worse_than_counter": 4,
       "verdict": "does not help"

@@ -6,13 +6,14 @@ model is good for in this program is explaining, afterwards, what the code
 already worked out.
 
 One invariant governs everything and is tested: the total the enrollee pays
-across the year is identical whether or not they participate. The programme
+across the year is identical whether or not they participate. The program
 moves money between months. It does not remove any.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from decimal import ROUND_HALF_UP, Decimal
 
 from .rules import threshold
 
@@ -65,7 +66,7 @@ class Outcome:
         """A balance can still be outstanding on 31 December, and joining in
         the last month or two is how that happens. The regulation addresses
         it directly: unsettled balances are treated as plan losses, and the
-        enrollee does not forfeit coverage over them. 42 CFR 423.137(e).
+        enrollee does not forfeit coverage over them. 42 CFR 423.137(g)(4).
 
         Conservation therefore reads: billed + still-owed == counter total.
         """
@@ -89,9 +90,23 @@ def _cap_first_month(year: int, incurred_before: float,
                      months_remaining: int) -> float:
     """(annual threshold - already incurred) / months remaining.
 
-    42 CFR 423.137(d)(2)(i). Months remaining includes the current month.
+    42 CFR 423.137(c)(1)(i). Months remaining includes the current month,
+    per 42 CFR 423.137(c)(3).
     """
     return max(0.0, threshold(year) - incurred_before) / months_remaining
+
+
+def _cents(x: float) -> float:
+    """Bills are issued in whole cents, and the balance carried forward is
+    the rounded one rather than the exact one. Keeping full precision drifts
+    by a few cents come December, which is small but matters: matching the
+    worked examples Medicare publishes is how anyone checks this code.
+
+    Half-up, not banker's rounding. Medicare's own example bills $58.925 as
+    $58.93 and $94.925 as $94.93, which settles the question.
+    """
+    return float(Decimal(repr(x)).quantize(Decimal("0.01"),
+                                           rounding=ROUND_HALF_UP))
 
 
 def simulate(monthly_out_of_pocket: list[float], year: int = 2026,
@@ -99,12 +114,12 @@ def simulate(monthly_out_of_pocket: list[float], year: int = 2026,
     """Run a year.
 
     `monthly_out_of_pocket` is twelve numbers: what this person would pay at
-    the pharmacy counter each month with no programme at all.
+    the pharmacy counter each month with no program at all.
 
     `start_month` is the month participation begins, 1-12, or None to model
     not participating. Costs incurred before `start_month` are paid at the
     counter, which is the rule that makes the whole thing so sensitive to
-    when someone finds out the programme exists.
+    when someone finds out the program exists.
     """
     if len(monthly_out_of_pocket) != 12:
         raise ValueError("expected twelve monthly amounts")
@@ -125,12 +140,15 @@ def simulate(monthly_out_of_pocket: list[float], year: int = 2026,
         if not participating:
             billed = oop
         elif m == start_month:
-            # Billed the lesser of what was actually incurred and the cap.
+            # 42 CFR 423.137(c)(1)(i). A participant is never billed more
+            # than they actually incurred, even when the cap is higher.
             billed = min(oop, _cap_first_month(year, incurred, remaining))
         else:
+            # 42 CFR 423.137(c)(1)(ii).
             billed = (unpaid + oop) / remaining
 
-        unpaid = unpaid + oop - billed
+        billed = _cents(billed)
+        unpaid = _cents(unpaid + oop - billed)
         incurred += oop
         out.months.append(MonthResult(
             month=m, out_of_pocket_incurred=oop, billed=billed,

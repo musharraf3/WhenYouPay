@@ -1,7 +1,7 @@
 """Cost profiles.
 
 These are not data. They are shapes a year of drug spending can take, each
-one chosen because it makes the programme behave differently. Numbers are
+one chosen because it makes the program behave differently. Numbers are
 illustrative and stated as such; nothing here claims to describe any real
 person or any real drug price.
 """

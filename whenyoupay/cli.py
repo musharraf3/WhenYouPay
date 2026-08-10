@@ -54,7 +54,7 @@ def main(argv=None) -> int:
         }, indent=2))
         return 0
 
-    print(f"{'month':11s} {'at the counter':>15s} {'in the programme':>18s}")
+    print(f"{'month':11s} {'at the counter':>15s} {'in the program':>18s}")
     for m in c["joined"].months:
         flag = "  <- more" if m.billed > m.out_of_pocket_incurred + 0.005 else ""
         print(f"{MONTHS[m.month - 1]:11s} {m.out_of_pocket_incurred:15,.2f} "

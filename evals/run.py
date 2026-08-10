@@ -55,7 +55,7 @@ def profile_table() -> list[dict]:
 
 def shock_month_sweep() -> list[dict]:
     """The best case anyone can have: an expensive drug starts, and the
-    person enrols in that same month. Nothing is late, nobody made a
+    person enrolls in that same month. Nothing is late, nobody made a
     mistake. The only thing that changes is where in the calendar the shock
     lands."""
     rows = []
@@ -77,7 +77,7 @@ def shock_month_sweep() -> list[dict]:
 
 def found_out_late_sweep() -> list[dict]:
     """The shock lands in January and is paid at the counter. Then the
-    person hears about the programme. This is the sweep that shows why the
+    person hears about the program. This is the sweep that shows why the
     72-hour retroactive window is the whole ballgame."""
     costs = PROFILES["january_shock"][0]
     rows = []
@@ -93,7 +93,7 @@ def found_out_late_sweep() -> list[dict]:
 
 
 def flat_backfire() -> list[dict]:
-    """For someone whose costs are already flat, the programme has nothing
+    """For someone whose costs are already flat, the program has nothing
     to smooth, so the balance simply migrates to the end of the year."""
     rows = []
     for monthly in (20, 40, 60, 100, 150, 200):
@@ -143,7 +143,7 @@ def main() -> int:
               f"{r['december_bill']:9,.0f}  {r['verdict']}")
 
     print("\n" + "=" * 72)
-    print("an $1,800 drug starts, and you enrol the same month. nothing late.")
+    print("an $1,800 drug starts, and you enroll the same month. nothing late.")
     print("=" * 72)
     print(f"{'shock lands':12s} {'months left':>12s} {'worst month':>12s} "
           f"{'relief':>9s} {'% of shock':>11s}  verdict")
@@ -161,7 +161,7 @@ def main() -> int:
               f"{r['relief']:9,.0f}  {r['verdict']}")
 
     print("\n" + "=" * 72)
-    print("already-flat costs: what the programme does to December")
+    print("already-flat costs: what the program does to December")
     print("=" * 72)
     print(f"{'per month':>10s} {'December':>10s} {'multiple':>10s}  verdict")
     for r in out["flat_backfire"]:
