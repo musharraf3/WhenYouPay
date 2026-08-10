@@ -1,0 +1,21 @@
+[project]
+name = "whenyoupay"
+version = "0.1.0"
+description = "What the Medicare Prescription Payment Plan does to your year. It changes when you pay, never what you owe."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Musharraf Shaikh" }]
+keywords = ["medicare", "part-d", "health-policy", "prescription-costs",
+            "healthcare", "cms", "public-benefits"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+whenyoupay = "whenyoupay.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"

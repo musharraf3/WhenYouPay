@@ -1,0 +1,327 @@
+{
+  "year": 2026,
+  "annual_out_of_pocket_threshold": 2100.0,
+  "invariant": {
+    "combinations_checked": 96,
+    "largest_total_difference": 0.0,
+    "holds": true
+  },
+  "profiles": [
+    {
+      "profile": "flat_low",
+      "description": "steady small copays all year",
+      "annual_total": 720.0,
+      "worst_month_counter": 60.0,
+      "worst_month_joined": 181.19,
+      "relief": -121.19,
+      "months_worse_than_counter": 4,
+      "december_bill": 181.19,
+      "verdict": "does not help"
+    },
+    {
+      "profile": "flat_mid",
+      "description": "steady moderate copays all year",
+      "annual_total": 1800.0,
+      "worst_month_counter": 150.0,
+      "worst_month_joined": 452.98,
+      "relief": -302.98,
+      "months_worse_than_counter": 4,
+      "december_bill": 452.98,
+      "verdict": "does not help"
+    },
+    {
+      "profile": "january_shock",
+      "description": "one expensive drug started in January",
+      "annual_total": 2075.0,
+      "worst_month_counter": 1800.0,
+      "worst_month_joined": 223.22,
+      "relief": 1576.78,
+      "months_worse_than_counter": 11,
+      "december_bill": 223.22,
+      "verdict": "helps"
+    },
+    {
+      "profile": "september_shock",
+      "description": "the same drug started in September",
+      "annual_total": 2075.0,
+      "worst_month_counter": 1800.0,
+      "worst_month_joined": 519.25,
+      "relief": 1280.75,
+      "months_worse_than_counter": 3,
+      "december_bill": 519.25,
+      "verdict": "helps"
+    },
+    {
+      "profile": "november_shock",
+      "description": "the same drug started in November",
+      "annual_total": 2075.0,
+      "worst_month_counter": 1800.0,
+      "worst_month_joined": 963.0,
+      "relief": 837.0,
+      "months_worse_than_counter": 3,
+      "december_bill": 963.0,
+      "verdict": "helps"
+    },
+    {
+      "profile": "two_shocks",
+      "description": "two costly months, January and July",
+      "annual_total": 2050.0,
+      "worst_month_counter": 900.0,
+      "worst_month_joined": 287.24,
+      "relief": 612.76,
+      "months_worse_than_counter": 10,
+      "december_bill": 287.24,
+      "verdict": "helps"
+    },
+    {
+      "profile": "ramping",
+      "description": "costs rising through the year",
+      "annual_total": 2460.0,
+      "worst_month_counter": 370.0,
+      "worst_month_joined": 877.95,
+      "relief": -507.95,
+      "months_worse_than_counter": 3,
+      "december_bill": 877.95,
+      "verdict": "does not help"
+    },
+    {
+      "profile": "capped_early",
+      "description": "reaches the annual ceiling by February",
+      "annual_total": 2100.0,
+      "worst_month_counter": 1200.0,
+      "worst_month_joined": 175.0,
+      "relief": 1025.0,
+      "months_worse_than_counter": 10,
+      "december_bill": 175.0,
+      "verdict": "helps"
+    }
+  ],
+  "shock_month_sweep": [
+    {
+      "shock_month": "January",
+      "months_to_spread_over": 12,
+      "worst_month": 223.22,
+      "relief": 1576.78,
+      "relief_share": 0.876,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "February",
+      "months_to_spread_over": 11,
+      "worst_month": 234.36,
+      "relief": 1565.64,
+      "relief_share": 0.8698,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "March",
+      "months_to_spread_over": 10,
+      "worst_month": 247.95,
+      "relief": 1552.05,
+      "relief_share": 0.8623,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "April",
+      "months_to_spread_over": 9,
+      "worst_month": 264.82,
+      "relief": 1535.18,
+      "relief_share": 0.8529,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "May",
+      "months_to_spread_over": 8,
+      "worst_month": 286.25,
+      "relief": 1513.75,
+      "relief_share": 0.841,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "June",
+      "months_to_spread_over": 7,
+      "worst_month": 314.23,
+      "relief": 1485.77,
+      "relief_share": 0.8254,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "July",
+      "months_to_spread_over": 6,
+      "worst_month": 352.08,
+      "relief": 1447.92,
+      "relief_share": 0.8044,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "August",
+      "months_to_spread_over": 5,
+      "worst_month": 405.83,
+      "relief": 1394.17,
+      "relief_share": 0.7745,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "September",
+      "months_to_spread_over": 4,
+      "worst_month": 487.5,
+      "relief": 1312.5,
+      "relief_share": 0.7292,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "October",
+      "months_to_spread_over": 3,
+      "worst_month": 625.0,
+      "relief": 1175.0,
+      "relief_share": 0.6528,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "November",
+      "months_to_spread_over": 2,
+      "worst_month": 925.0,
+      "relief": 875.0,
+      "relief_share": 0.4861,
+      "year_end_unpaid": 0.0,
+      "verdict": "helps"
+    },
+    {
+      "shock_month": "December",
+      "months_to_spread_over": 1,
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "relief_share": 0.0,
+      "year_end_unpaid": 0.0,
+      "verdict": "does not help"
+    }
+  ],
+  "found_out_late_sweep": [
+    {
+      "join_month": "January",
+      "worst_month": 223.22,
+      "relief": 1576.78,
+      "verdict": "helps"
+    },
+    {
+      "join_month": "February",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    },
+    {
+      "join_month": "March",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    },
+    {
+      "join_month": "April",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    },
+    {
+      "join_month": "May",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    },
+    {
+      "join_month": "June",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    },
+    {
+      "join_month": "July",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    },
+    {
+      "join_month": "August",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    },
+    {
+      "join_month": "September",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    },
+    {
+      "join_month": "October",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    },
+    {
+      "join_month": "November",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    },
+    {
+      "join_month": "December",
+      "worst_month": 1800.0,
+      "relief": 0.0,
+      "verdict": "does not help"
+    }
+  ],
+  "flat_backfire": [
+    {
+      "monthly_at_counter": 20,
+      "december_bill": 60.4,
+      "multiple_of_counter": 3.02,
+      "months_worse_than_counter": 4,
+      "verdict": "does not help"
+    },
+    {
+      "monthly_at_counter": 40,
+      "december_bill": 120.8,
+      "multiple_of_counter": 3.02,
+      "months_worse_than_counter": 4,
+      "verdict": "does not help"
+    },
+    {
+      "monthly_at_counter": 60,
+      "december_bill": 181.19,
+      "multiple_of_counter": 3.02,
+      "months_worse_than_counter": 4,
+      "verdict": "does not help"
+    },
+    {
+      "monthly_at_counter": 100,
+      "december_bill": 301.99,
+      "multiple_of_counter": 3.02,
+      "months_worse_than_counter": 4,
+      "verdict": "does not help"
+    },
+    {
+      "monthly_at_counter": 150,
+      "december_bill": 452.98,
+      "multiple_of_counter": 3.02,
+      "months_worse_than_counter": 4,
+      "verdict": "does not help"
+    },
+    {
+      "monthly_at_counter": 200,
+      "december_bill": 606.25,
+      "multiple_of_counter": 3.03,
+      "months_worse_than_counter": 4,
+      "verdict": "does not help"
+    }
+  ]
+}
