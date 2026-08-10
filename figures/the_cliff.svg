@@ -14,6 +14,7 @@
 <line x1="64" y1="210.0" x2="1136" y2="210.0" stroke="#e6e5e1" stroke-width="1"/>
 <text x="50" y="216.0" font-size="16" fill="#8a8a84" text-anchor="end">$200</text>
 <rect x="83.7" y="490.0" width="50.0" height="120.0" rx="4" fill="#2a78d6"/>
+<text x="108.7" y="476.0" font-size="18" font-weight="700" fill="#0b0b0b" text-anchor="middle">$60</text>
 <text x="108.7" y="638.0" font-size="17" fill="#52514e" text-anchor="middle">Jan</text>
 <rect x="173.0" y="599.1" width="50.0" height="10.9" rx="4" fill="#2a78d6"/>
 <text x="198.0" y="638.0" font-size="17" fill="#52514e" text-anchor="middle">Feb</text>
@@ -38,11 +39,10 @@
 <rect x="1066.3" y="247.6" width="50.0" height="362.4" rx="4" fill="#2a78d6"/>
 <text x="1091.3" y="638.0" font-size="17" fill="#52514e" text-anchor="middle">Dec</text>
 <line x1="64" y1="490.0" x2="1136" y2="490.0" stroke="#eb6834" stroke-width="2.5" stroke-dasharray="8 6"/>
+<text x="163.3" y="518.0" font-size="18" font-weight="600" fill="#eb6834">Paying cash: $60 every month</text>
+<text x="72" y="262" font-size="19" font-weight="600" fill="#0b0b0b">Bars below the line: you paid less than cash that month.</text>
+<text x="72" y="288" font-size="19" font-weight="600" fill="#0b0b0b">Bars above it: you paid more.</text>
 <text x="1091.3" y="233.6" font-size="24" font-weight="700" fill="#0b0b0b" text-anchor="middle">$181.19</text>
 <text x="1091.3" y="207.6" font-size="17" fill="#52514e" text-anchor="middle">3.02&#215; the counter</text>
-<rect x="64" y="163" width="15" height="15" rx="3" fill="#2a78d6"/>
-<text x="87" y="176" font-size="18" fill="#52514e">Billed in the program</text>
-<line x1="294" y1="170" x2="330" y2="170" stroke="#eb6834" stroke-width="2.5" stroke-dasharray="8 6"/>
-<text x="340" y="176" font-size="18" fill="#52514e">At the pharmacy counter ($60)</text>
 <text x="64" y="682" font-size="21" font-weight="600" fill="#0b0b0b">The year costs $720 either way. 4 of the 12 months cost more than paying cash.</text>
 </svg>

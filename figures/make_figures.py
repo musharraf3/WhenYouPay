@@ -73,6 +73,9 @@ def calendar_figure() -> str:
         "github.com/musharraf3/WhenYouPay",
     )
 
+    s.append(f'<text x="{x0-72}" y="{y0-14}" font-size="17" font-weight="600" '
+             f'fill="{INK2}">Highest single month&#39;s bill</text>')
+
     for v in (0, 500, 1000, 1500, 2000):
         y = y0 + plot_h - plot_h * v / top
         s.append(f'<line x1="{x0}" y1="{y:.1f}" x2="{x0+plot_w}" y2="{y:.1f}" '
@@ -153,6 +156,10 @@ def cliff_figure() -> str:
         y = y0 + plot_h - bh
         s.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw:.1f}" height="{bh:.1f}" '
                  f'rx="4" fill="{BLUE}"/>')
+        if i == 0:
+            s.append(f'<text x="{x+bw/2:.1f}" y="{y-14:.1f}" font-size="18" '
+                     f'font-weight="700" fill="{INK}" text-anchor="middle">'
+                     f'${amt:,.0f}</text>')
         s.append(f'<text x="{x+bw/2:.1f}" y="{y0+plot_h+28:.1f}" font-size="17" '
                  f'fill="{INK2}" text-anchor="middle">{months[i]}</text>')
 
@@ -160,6 +167,18 @@ def cliff_figure() -> str:
     yc = y0 + plot_h - plot_h * per_month / top
     s.append(f'<line x1="{x0}" y1="{yc:.1f}" x2="{x0+plot_w}" y2="{yc:.1f}" '
              f'stroke="{ORANGE}" stroke-width="2.5" stroke-dasharray="8 6"/>')
+    # under the line, starting after January (whose bar reaches the line) and
+    # ending before July, whose bar climbs back into this band
+    s.append(f'<text x="{x0+slot+10:.1f}" y="{yc+28:.1f}" font-size="18" '
+             f'font-weight="600" fill="{ORANGE}">'
+             f'Paying cash: ${per_month:,.0f} every month</text>')
+
+    # the plot's whole upper-left is empty; spend it explaining the encoding
+    s.append(f'<text x="{x0+8}" y="{y0+52}" font-size="19" font-weight="600" '
+             f'fill="{INK}">Bars below the line: you paid less than cash that '
+             f'month.</text>')
+    s.append(f'<text x="{x0+8}" y="{y0+78}" font-size="19" font-weight="600" '
+             f'fill="{INK}">Bars above it: you paid more.</text>')
 
     # December, direct-labelled because it is the whole point
     xd = x0 + slot * 11 + (slot - bw) / 2
@@ -169,15 +188,6 @@ def cliff_figure() -> str:
              f'${billed[-1]:,.2f}</text>')
     s.append(f'<text x="{xd+bw/2:.1f}" y="{yd-40:.1f}" font-size="17" '
              f'fill="{INK2}" text-anchor="middle">3.02&#215; the counter</text>')
-
-    ly = y0 - 34
-    s.append(f'<rect x="{x0}" y="{ly-13}" width="15" height="15" rx="3" fill="{BLUE}"/>')
-    s.append(f'<text x="{x0+23}" y="{ly}" font-size="18" fill="{INK2}">'
-             f'Billed in the program</text>')
-    s.append(f'<line x1="{x0+230}" y1="{ly-6}" x2="{x0+266}" y2="{ly-6}" '
-             f'stroke="{ORANGE}" stroke-width="2.5" stroke-dasharray="8 6"/>')
-    s.append(f'<text x="{x0+276}" y="{ly}" font-size="18" fill="{INK2}">'
-             f'At the pharmacy counter ($60)</text>')
 
     over = [i for i, a in enumerate(billed) if a > per_month]
 

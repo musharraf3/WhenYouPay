@@ -3,6 +3,7 @@
 <text x="64" y="76" font-size="36" font-weight="700" fill="#0b0b0b">Same drug, same $1,800. The month it starts sets your worst bill.</text>
 <text x="64" y="116" font-size="21" fill="#52514e">Each bar is a different person starting the same drug in a different month. Nobody was late.</text>
 <text x="64" y="730" font-size="16" fill="#8a8a84">42 CFR 423.137 · 2026 out-of-pocket cap $2,100 · github.com/musharraf3/WhenYouPay</text>
+<text x="20" y="218" font-size="17" font-weight="600" fill="#52514e">Highest single month&#39;s bill</text>
 <line x1="92" y1="604.0" x2="1136" y2="604.0" stroke="#e6e5e1" stroke-width="1"/>
 <text x="78" y="610.0" font-size="16" fill="#8a8a84" text-anchor="end">$0</text>
 <line x1="92" y1="511.0" x2="1136" y2="511.0" stroke="#e6e5e1" stroke-width="1"/>
