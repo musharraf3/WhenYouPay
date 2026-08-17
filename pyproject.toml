@@ -30,6 +30,12 @@ dev = ["pytest>=7"]
 [project.scripts]
 whenyoupay = "whenyoupay.cli:main"
 
+# Flat layout with several top-level directories (tests, evals, figures,
+# results) leaves setuptools unable to guess what the package is, and it
+# refuses rather than picking. Naming it explicitly is the documented fix.
+[tool.setuptools]
+packages = ["whenyoupay"]
+
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
