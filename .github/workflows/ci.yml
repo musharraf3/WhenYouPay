@@ -43,6 +43,15 @@ jobs:
       - name: Tests
         run: python -m pytest tests/ -q
 
+      - name: The documented entry point, with nothing installed
+        # README's first instruction is `python run.py` from a fresh clone.
+        # Run it in a directory that is not the repo root, from a checkout
+        # with no editable install, which is what a reader actually does.
+        run: |
+          pip uninstall -y whenyoupay || true
+          cd /
+          python "$GITHUB_WORKSPACE/run.py" > /dev/null
+
   reproducible:
     # The claim under test: a clean machine, no cached state, produces the
     # committed artifacts byte for byte.

@@ -178,15 +178,27 @@ The tool is also tested never to use the words *save*, *savings*, *cheaper* or
 
 ```bash
 git clone https://github.com/musharraf3/WhenYouPay && cd WhenYouPay
-pip install -e .
-
-whenyoupay --costs "1800 25 25 25 25 25 25 25 25 25 25 25" --join 1
-whenyoupay --costs 60 --join 1          # one number means every month
-whenyoupay --profile november_shock --join 11
-whenyoupay --costs 60 --join 1 --json
+python run.py
 ```
 
-No network, no API key, no dependencies.
+That is the whole setup. No install, no dependencies, no API key, no network —
+`run.py` puts itself on the path and prints the entire argument: the program
+working, the calendar, and the December backfire.
+
+Your own numbers, same script:
+
+```bash
+python run.py --costs 60                  # one number means every month
+python run.py --costs "1800 25 25 25 25 25 25 25 25 25 25 25" --join 1
+python run.py --profile november_shock --join 11
+python run.py --costs 60 --json
+```
+
+Installing is optional and only buys you a shorter command:
+
+```bash
+pip install -e .        # then: whenyoupay --costs 60
+```
 
 ## How it is built
 

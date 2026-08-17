@@ -329,3 +329,44 @@ def test_no_source_file_cites_the_retired_paragraphs():
     for path in list((root / "whenyoupay").glob("*.py")) + [root / "README.md"]:
         text = path.read_text(encoding="utf-8")
         assert "423.137(d)(2)" not in text, f"{path.name} cites retired 423.137(d)(2)"
+
+
+# ---------------------------------------------------------------------------
+# The documented way in.
+#
+# README's first instruction is `python run.py`, with no install step. That
+# path had no coverage: the suite imports the package directly, so it would
+# still pass if run.py were broken, missing, or crashed on bad input. The
+# install instruction before it was wrong for months for exactly this reason.
+# ---------------------------------------------------------------------------
+
+def test_run_py_works_with_no_arguments_and_no_install():
+    import subprocess
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    r = subprocess.run([sys.executable, os.path.join(root, "run.py")],
+                       capture_output=True, cwd=os.path.dirname(root))
+    assert r.returncode == 0, r.stderr.decode("utf-8", "replace")
+    out = r.stdout.decode("utf-8", "replace")
+    assert "$223.22" in out          # the January case
+    assert "$181.19" in out or "181.19" in out   # the December backfire
+
+
+def test_run_py_output_is_ascii():
+    """A Windows console defaults to cp1252. Non-ASCII output there is
+    mojibake, which reads as a broken program to the person running it."""
+    import subprocess
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    r = subprocess.run([sys.executable, os.path.join(root, "run.py")],
+                       capture_output=True)
+    assert all(b < 128 for b in r.stdout), "run.py printed a non-ASCII byte"
+
+
+def test_run_py_rejects_bad_input_without_a_traceback():
+    import subprocess
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    r = subprocess.run([sys.executable, os.path.join(root, "run.py"),
+                        "--costs", "-5"], capture_output=True)
+    assert r.returncode == 2
+    err = r.stderr.decode("utf-8", "replace")
+    assert "Traceback" not in err
+    assert "cannot be used" in err
