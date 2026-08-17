@@ -1,6 +1,6 @@
 [project]
 name = "whenyoupay"
-version = "0.1.0"
+version = "0.2.0"
 description = "What the Medicare Prescription Payment Plan does to your year. It changes when you pay, never what you owe."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -9,6 +9,20 @@ authors = [{ name = "Musharraf Shaikh" }]
 keywords = ["medicare", "part-d", "health-policy", "prescription-costs",
             "healthcare", "cms", "public-benefits"]
 dependencies = []
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Healthcare Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+[project.urls]
+Homepage = "https://github.com/musharraf3/WhenYouPay"
+Repository = "https://github.com/musharraf3/WhenYouPay"
+Issues = "https://github.com/musharraf3/WhenYouPay/issues"
 
 [project.optional-dependencies]
 dev = ["pytest>=7"]

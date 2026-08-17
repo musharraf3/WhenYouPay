@@ -76,12 +76,12 @@
     {
       "profile": "ramping",
       "description": "costs rising through the year",
-      "annual_total": 2460.0,
-      "worst_month_counter": 370.0,
-      "worst_month_joined": 877.95,
-      "relief": -507.95,
+      "annual_total": 2100.0,
+      "worst_month_counter": 340.0,
+      "worst_month_joined": 517.95,
+      "relief": -177.95,
       "months_worse_than_counter": 3,
-      "december_bill": 877.95,
+      "december_bill": 517.95,
       "verdict": "does not help"
     },
     {
@@ -318,8 +318,8 @@
     },
     {
       "monthly_at_counter": 200,
-      "december_bill": 606.24,
-      "multiple_of_counter": 3.03,
+      "december_bill": 356.24,
+      "multiple_of_counter": 1.78,
       "months_worse_than_counter": 4,
       "verdict": "does not help"
     }

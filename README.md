@@ -1,5 +1,7 @@
 # WhenYouPay
 
+[![ci](https://github.com/musharraf3/WhenYouPay/actions/workflows/ci.yml/badge.svg)](https://github.com/musharraf3/WhenYouPay/actions/workflows/ci.yml)
+
 **The Medicare Prescription Payment Plan changes when you pay, never what you owe. How much it helps is decided by the calendar, not by your need.**
 
 Weekend Builds in Healthcare AI · #9
@@ -84,8 +86,15 @@ condition and a maintenance drug.
 
 Their December bill is **3.02× what they would have paid at the counter**, and
 that multiple is identical at $20 a month, $60 a month, or $150 a month. It is a
-property of the formula, not of the person's income. Above $175 a month (the
-threshold divided by twelve) it drifts higher still.
+property of the formula, not of the person's income.
+
+Above $175 a month — the threshold divided by twelve — the multiple *falls*,
+and steeply: 1.78× at $200 a month, 0.39× at $500. Spending more than
+threshold/12 means reaching the annual maximum partway through the year and
+paying nothing after it, so December has less left to absorb. The worst case is
+not the biggest spender. It is whoever spends almost exactly $175 a month, the
+only amount that stays flat all year *and* reaches the ceiling on the last day
+of it.
 
 **This is not my finding.** Medicare publishes the same case: a steady $80 a
 month through 2026, ending with a December bill of **$241.53** — 3.019× the
@@ -152,10 +161,15 @@ every possible joining month — 96 combinations, largest discrepancy **$0.00**:
 
 > What you pay across the year is identical whether or not you participate.
 
-Anything still owed on 31 December counts toward that total. A balance *can*
-survive the year end when someone joins in the last month or two; the regulation
-anticipates this and treats it as a plan loss, with the enrollee's coverage not
-forfeited [42 CFR 423.137(g)(4)].
+Anything still owed on 31 December counts toward that total, though in this
+model nothing ever is: December divides by one remaining month, so whatever is
+left gets billed in full. An earlier version of this README claimed a balance
+could survive the year end, and a test asserted it — both were artifacts of the
+ceiling bug described below.
+
+42 CFR 423.137(g)(4) is still cited and still real. It governs unsettled
+balances, which arise from non-*payment*; this engine models what a plan bills,
+not what an enrollee has paid, so it cannot produce one.
 
 The tool is also tested never to use the words *save*, *savings*, *cheaper* or
 *discount*. It cannot save anyone money and should never imply it does.
@@ -194,7 +208,7 @@ free text.
 
 ```bash
 python evals/run.py            # every number in this README
-python -m pytest tests/ -q     # 33 tests
+python -m pytest tests/ -q     # 37 tests
 ```
 
 ## Limits
@@ -215,7 +229,27 @@ low-income subsidy reduces what you *owe*, which this program never does. The
 tool says so in every single output, because someone who qualifies for Extra Help
 and joins this instead has taken the smaller of two benefits.
 
-**Five things I got wrong, all in the history.** I first asserted the
+**The engine ignored the annual out-of-pocket maximum, and the fixtures hid
+it.** `simulate()` took the monthly costs it was given at face value, so asking
+it about $500 a month returned $6,000 for a year that costs $2,100 — while the
+advice printed beside that number said *"above the ceiling you pay nothing more
+for covered Part D drugs."* The tool stated the rule and contradicted it in the
+same breath.
+
+It survived because every fixture applied the cap by hand. Medicare's own
+Example 1 is `[525, 525, 525, 525, 0, 0, 0, 0, 0, 0, 0, 0]` — a human did the
+capping and typed the zeros, and the engine never had to. All three published
+examples reconciled to the cent while the arithmetic underneath was wrong for
+anyone outside them.
+
+That is the uncomfortable one, because this project's whole argument is that
+external validation catches what internal consistency cannot. Here it did not.
+The published examples all sat inside the blind spot. What eventually caught it
+was asking the engine a question no fixture asked: what happens above the
+ceiling. Fixed in `simulate()`, with three tests that would have caught it and a
+conservation sweep that now includes profiles running past the threshold.
+
+**Five things I got wrong before that, all in the history.** I first asserted the
 conservation invariant as `billed == counter`, and it failed by $360 — because a
 balance can genuinely still be outstanding on 31 December, which I had not read
 carefully enough. I flagged "you will pay more than the counter in later months"
@@ -223,7 +257,8 @@ as a warning on every profile, including the ones where it is simply the
 mechanism working and the trade is a good one; crying wolf on the helpful cases
 would have made the real warnings worthless. I assumed the 3.02× December
 multiple was a universal constant, until testing above $175 a month showed it
-drifts. **I cited the formula to the wrong paragraphs** — (d)(2)(i) and (d)(2)(ii)
+does not hold there — though for two versions I had the direction wrong, and the
+reason is the next confession. **I cited the formula to the wrong paragraphs** — (d)(2)(i) and (d)(2)(ii)
 rather than (c)(1)(i) and (c)(1)(ii) — which is the kind of error that discredits
 everything around it, and it survived until I went back to the regulation to
 check. And I used full floating-point precision for carried balances, which is

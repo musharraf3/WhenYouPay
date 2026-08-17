@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 
@@ -28,13 +29,57 @@ def test_participation_never_changes_the_total():
             assert abs(joined.total_accounted - counter) < CENT
 
 
-def test_a_balance_can_survive_the_year_end():
-    """Joining in December with a large bill leaves money outstanding. The
-    regulation anticipates this and calls it a plan loss."""
-    out = simulate([25.0] * 11 + [1800.0], 2026, 12)
-    assert out.year_end_unpaid == 0.0 or out.year_end_unpaid > 0
-    late = simulate([500.0] * 12, 2026, 12)
-    assert late.year_end_unpaid > 0
+def test_everything_incurred_is_billed_by_december():
+    """No balance survives the year end in this model, and that is correct.
+
+    December divides by one remaining month, so whatever is left is billed in
+    full. An earlier version of this test asserted the opposite, and passed --
+    but only because the engine was not applying the annual ceiling. Once
+    incurred costs ran past the threshold, `_cap_first_month` went negative,
+    was floored to zero, and a late joiner was billed nothing while carrying a
+    balance that could not exist.
+
+    42 CFR 423.137(g)(4) is still cited and still real: it governs unsettled
+    balances, which arise from non-*payment*. This engine models what a plan
+    bills, not what an enrollee has paid, so it cannot produce one.
+    """
+    shapes = [c for c, _d in PROFILES.values()]
+    shapes += [[500.0] * 12, [0.0] * 11 + [3000.0], [175.0] * 12]
+    for costs in shapes:
+        for start in list(range(1, 13)) + [None]:
+            assert simulate(costs, 2026, start).year_end_unpaid == 0.0
+
+
+# --- the annual out-of-pocket ceiling ---------------------------------------
+
+def test_costs_above_the_ceiling_stop_accruing():
+    """A Part D enrollee pays nothing more for covered drugs once they reach
+    the annual threshold. Taking a caller's $500 a month literally would
+    report $6,000 for a year that costs $2,100 -- and would contradict the
+    ceiling this tool prints in its own advice."""
+    joined = simulate([500.0] * 12, 2026, 1)
+    counter = simulate([500.0] * 12, 2026, None)
+    assert abs(counter.total_counter - threshold(2026)) < CENT
+    assert abs(joined.total_billed - threshold(2026)) < CENT
+
+
+def test_the_ceiling_applies_to_the_counter_too():
+    """Both paths clamp identically. If only the program side stopped at the
+    threshold, the tool would invent relief that does not exist."""
+    for monthly in (200.0, 300.0, 500.0):
+        joined = simulate([monthly] * 12, 2026, 1)
+        counter = simulate([monthly] * 12, 2026, None)
+        assert abs(joined.total_billed - counter.total_counter) < CENT
+
+
+def test_conservation_holds_above_the_ceiling():
+    """The 96-case sweep only used profiles that stay under the threshold,
+    which is why the invariant looked healthy while the ceiling was ignored."""
+    for costs in ([500.0] * 12, [3000.0] * 12, [0.0] * 10 + [2000.0, 2000.0]):
+        counter = simulate(costs, 2026, None).total_billed
+        for start in range(1, 13):
+            joined = simulate(costs, 2026, start)
+            assert abs(joined.total_accounted - counter) < CENT
 
 
 def test_no_month_is_negative():
@@ -68,6 +113,26 @@ def test_joining_later_leaves_earlier_months_at_counter_price():
     out = simulate(SHOCK, 2026, 6)
     assert out.billed[0] == 1800.0
     assert out.months[0].participating is False
+
+
+def test_the_current_year_is_supported():
+    """This repository has an expiry date and nothing else would announce it.
+
+    OOP_THRESHOLD is a published figure, not a formula -- it is set annually by
+    CMS and cannot be derived. `threshold()` refuses unknown years rather than
+    guessing, which is right, but it means that on 1 January of the first
+    unlisted year every answer for the current year becomes an exception.
+
+    Same instinct as the code-set vintage gate in WhoCounts: a constant that
+    ages out silently should set off an alarm before a user finds it. Green
+    today; red the day CMS publishes the next threshold and this file has not
+    been updated.
+    """
+    year = datetime.date.today().year
+    assert year in OOP_THRESHOLD, (
+        f"No out-of-pocket threshold on file for {year}. CMS publishes it "
+        f"annually; add it to OOP_THRESHOLD in whenyoupay/rules.py with its "
+        f"source. Known years: {sorted(OOP_THRESHOLD)}.")
 
 
 def test_unknown_year_refuses_rather_than_guessing():
@@ -107,14 +172,19 @@ def test_flat_costs_backfire_and_the_tool_says_so():
     assert advise(FLAT, 2026, 1).verdict == "does not help"
 
 
-def test_the_flat_december_multiple_is_a_property_of_the_formula():
-    """Below the first-month cap the multiple is the same whatever the
-    amount: it falls out of the arithmetic, not out of anyone's income.
+def test_the_flat_december_multiple_peaks_at_the_threshold_over_twelve():
+    """Below threshold/12 the multiple is constant whatever the amount: it
+    falls out of the arithmetic, not out of anyone's income.
 
-    Above the cap it drifts upward, because the first month is held down to
-    (threshold / 12) and the untaken balance rolls forward. Both halves are
-    asserted, because the second one is a limit on how far the headline
-    number travels.
+    Above it the multiple *falls*, and steeply. This is the opposite of what
+    this test asserted before the ceiling was enforced. Spending more than
+    threshold/12 a month means reaching the annual maximum partway through the
+    year and paying nothing after it, so December has less left to absorb.
+
+    The worst case is therefore not the biggest spender. It is whoever spends
+    almost exactly the threshold divided by twelve -- $175 a month in 2026 --
+    which is the only amount that both stays flat all year and reaches the
+    ceiling on the last day of it.
     """
     below = []
     for monthly in (20.0, 60.0, 150.0):        # under 2100/12 = 175
@@ -123,8 +193,14 @@ def test_the_flat_december_multiple_is_a_property_of_the_formula():
     assert max(below) - min(below) < 0.01
     assert 3.0 < below[0] < 3.05
 
-    above = compare([500.0] * 12, 2026, 1)
-    assert above["joined"].billed[11] / 500.0 > max(below)
+    peak = compare([175.0] * 12, 2026, 1)["joined"].billed[11] / 175.0
+    assert abs(peak - below[0]) < 0.01
+
+    previous = peak
+    for monthly in (200.0, 300.0, 500.0):
+        multiple = compare([monthly] * 12, 2026, 1)["joined"].billed[11] / monthly
+        assert multiple < previous, (monthly, multiple, previous)
+        previous = multiple
 
 
 def test_relief_falls_as_the_shock_lands_later():

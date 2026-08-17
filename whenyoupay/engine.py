@@ -116,6 +116,14 @@ def simulate(monthly_out_of_pocket: list[float], year: int = 2026,
     `monthly_out_of_pocket` is twelve numbers: what this person would pay at
     the pharmacy counter each month with no program at all.
 
+    Those numbers are clamped to the annual out-of-pocket maximum as the year
+    accumulates. Once an enrollee reaches the threshold they pay nothing more
+    for covered Part D drugs, at the counter or in the program, so a caller
+    who passes $500 a month is asking about someone who stops paying in May.
+    Taking the input literally would report $6,000 for a year that costs
+    $2,100 -- and would contradict the ceiling this tool prints in its own
+    advice. See `threshold()` and SSA 1860D-2(b)(4)(B).
+
     `start_month` is the month participation begins, 1-12, or None to model
     not participating. Costs incurred before `start_month` are paid at the
     counter, which is the rule that makes the whole thing so sensitive to
@@ -133,7 +141,12 @@ def simulate(monthly_out_of_pocket: list[float], year: int = 2026,
     incurred = 0.0
 
     for m in range(1, 13):
-        oop = float(monthly_out_of_pocket[m - 1])
+        # The ceiling is applied here, before either path sees the number, so
+        # the counter and the program clamp identically. That is what keeps
+        # the conservation invariant true above the threshold as well as below
+        # it: both sides are spreading the same capped total.
+        oop = min(float(monthly_out_of_pocket[m - 1]),
+                  max(0.0, threshold(year) - incurred))
         remaining = 12 - m + 1
         participating = start_month is not None and m >= start_month
 

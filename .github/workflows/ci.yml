@@ -1,0 +1,71 @@
+name: ci
+
+# Three things are being checked, and only the first is ordinary.
+#
+#   1. the tests pass, on both ends of the supported Python range
+#   2. the committed results and figures still match what the code produces
+#   3. the current year still has a published out-of-pocket threshold
+#
+# (2) is why this file exists. The README says every number in it comes from
+# the committed run. Without a job that regenerates and diffs, that is an
+# assertion; with one, it is enforced.
+#
+# (3) is why it runs on a schedule as well as on push. Nobody pushes to this
+# repository in January, which is exactly when CMS's new threshold makes the
+# pinned constant stale.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 9 1 * *"          # 09:00 UTC, first of the month
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # requires-python is ">=3.10"; test both ends rather than claim it.
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install
+        run: pip install -e ".[dev]"
+
+      - name: Tests
+        run: python -m pytest tests/ -q
+
+  reproducible:
+    # The claim under test: a clean machine, no cached state, produces the
+    # committed artifacts byte for byte.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install -e ".[dev]"
+
+      - name: Regenerate the committed run
+        run: |
+          python evals/run.py
+          python figures/make_figures.py
+
+      - name: Committed artifacts must match a fresh run
+        run: |
+          if ! git diff --exit-code -- results/ figures/; then
+            echo "::error::results/ or figures/ are stale. Run 'python evals/run.py'"
+            echo "::error::and 'python figures/make_figures.py', then commit the output."
+            exit 1
+          fi
